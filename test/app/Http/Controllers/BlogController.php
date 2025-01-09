@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,7 +17,7 @@ class BlogController extends Controller
     public function index(): Response
     {
         return Inertia::render('Blogs/Index', [
-            'blogs' => Blog::with('user: id, name')->latest()->get(),
+            'replicas' => Blog::with('user: id, name')->latest()->get(),
         ]);
     }
 
@@ -59,16 +60,23 @@ class BlogController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Blog $blog)
+    public function update(Request $request, Blog $blog): RedirectResponse
     {
-        //
+        Gate::authorize('update', $blog);
+        $validated = $request->validate([
+            'message'=> 'required|string|max:255',
+        ]);
+        $blog->update($validated);
+        return redirect(route('blogs.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Blog $blog)
+    public function destroy(Blog $blog): RedirectResponse
     {
-        //
+        Gate::authorize('delete', $blog);
+        $blog->delete();
+        return redirect(route('blogs.index'));
     }
 }
