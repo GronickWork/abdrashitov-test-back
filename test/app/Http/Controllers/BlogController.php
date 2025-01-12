@@ -63,7 +63,6 @@ class BlogController extends Controller
     public function update(Request $request, Blog $blog): RedirectResponse
     {
         Gate::authorize('update', $blog);
-dd('second dd');
         $validated = $request->validate([
             'message'=> 'required|string|max:255',
         ]);
