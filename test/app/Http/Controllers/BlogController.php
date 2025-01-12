@@ -17,7 +17,7 @@ class BlogController extends Controller
     public function index(): Response
     {
         return Inertia::render('Blogs/Index', [
-            'replicas' => Blog::with('user: id, name')->latest()->get(),
+            'replicas' => Blog::with('user:id,name')->latest()->get(),
         ]);
     }
 
@@ -34,10 +34,10 @@ class BlogController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'message'=> 'required|string|max:255',
+        $validate = $request->validate([
+            'message'=>'required|string|max:255',
         ]);
-        $request->user()->blogs()->create($validated);
+        $request->user()->blogs()->create($validate);
         return redirect(route('blogs.index'));
     }
 
@@ -63,9 +63,11 @@ class BlogController extends Controller
     public function update(Request $request, Blog $blog): RedirectResponse
     {
         Gate::authorize('update', $blog);
+dd('second dd');
         $validated = $request->validate([
             'message'=> 'required|string|max:255',
         ]);
+
         $blog->update($validated);
         return redirect(route('blogs.index'));
     }
@@ -76,6 +78,7 @@ class BlogController extends Controller
     public function destroy(Blog $blog): RedirectResponse
     {
         Gate::authorize('delete', $blog);
+dd('second dd');
         $blog->delete();
         return redirect(route('blogs.index'));
     }

@@ -11,9 +11,10 @@ const{data, setData, post, processing, errors, reset} = useForm({message: ''});
       e.preventDefault();
       post(route('blogs.store'), { onSuccess: () => reset() });
   }
-
+//console.log(replicas);
+//console.log(auth);
   return (
-    <AuthenticatedLayout>
+    <AuthenticatedLayout user={auth.user}>
       <Head title="Blog message" />
       <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
         <form onSubmit={submit}>
@@ -28,8 +29,8 @@ const{data, setData, post, processing, errors, reset} = useForm({message: ''});
           <PrimaryButton className='mt-4' disabled={processing}>Отправить</PrimaryButton>
         </form>
         <div className="mt-6 bg-white shadow-sm rounded-lg divide-y">
-            {replicas.map(chirp =>
-                <Replica key={chirp.id} chirp={chirp} />
+            {replicas.map(blurt =>
+                <Replica key={blurt.id} blurt={blurt} />
             )}
         </div>
       </div>
