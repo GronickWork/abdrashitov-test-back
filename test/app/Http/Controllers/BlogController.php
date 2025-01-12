@@ -77,7 +77,6 @@ class BlogController extends Controller
     public function destroy(Blog $blog): RedirectResponse
     {
         Gate::authorize('delete', $blog);
-dd('second dd');
         $blog->delete();
         return redirect(route('blogs.index'));
     }

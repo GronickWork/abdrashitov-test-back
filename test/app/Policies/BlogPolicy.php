@@ -6,7 +6,7 @@ use App\Models\Blog;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class ReplicaPolicy
+class BlogPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -36,7 +36,7 @@ class ReplicaPolicy
      * Determine whether the user can update the model.
      */
     public function update(User $user, Blog $blog): bool
-    {dd('second dd КуздшсфЗщдшын');
+    {
         return $blog->user() -> is($user);
     }
 
